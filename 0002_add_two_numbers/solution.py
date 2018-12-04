@@ -41,11 +41,12 @@ class Solution:
         :type num: int
         :rtype: ListNode
         """
-        current = ListNode(num % 10)
         if num > 9:
+            current = ListNode(num % 10)
             current.next = self.numToListNode(num // 10)
-
-        return current 
+            return current
+        else:
+            return ListNode(num)
 
 def arrayToListNode(array):
     """
