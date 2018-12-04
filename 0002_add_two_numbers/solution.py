@@ -15,7 +15,7 @@ class ListNode:
             yield current.val
             current = current.next
 
-class Solution1:
+class Solution:
     def addTwoNumbers(self, l1, l2):
         """
         :type l1: ListNode
@@ -42,30 +42,56 @@ class Solution1:
         :rtype: ListNode
         """
         current = ListNode(num % 10)
-        if num > 10:
+        if num > 9:
             current.next = self.numToListNode(num // 10)
 
         return current 
 
-l1 = ListNode(2)
-l1.next = ListNode(4)
-l1.next.next = ListNode(3)
-l2 = ListNode(5)
-l2.next = ListNode(6)
-l2.next.next = ListNode(4)
-result = ListNode(7)
-result.next = ListNode(0)
-result.next.next = ListNode(8)
+def arrayToListNode(array):
+    """
+    :type array: int[]
+    :rtype ListNode:
+    """
+    if len(array) == 0:
+        raise Exception('empty array!')
+    elif len(array) == 1:
+        return ListNode(array[0])
+    else:
+        current = ListNode(array.pop(0))
+        current.next = arrayToListNode(array)
+        return current
 
 def test_list_node_to_num_1():
-    assert Solution1().listNodeToNum(l1) == 342
+    ls = arrayToListNode([2, 4, 3])
+    assert Solution().listNodeToNum(ls) == 342
 
 def test_list_node_to_num_2():
-    assert Solution1().listNodeToNum(l2) == 465
+    ls = arrayToListNode([5, 6, 4])
+    assert Solution().listNodeToNum(ls) == 465
 
 def test_num_to_list_node():
-    assert list(Solution1().numToListNode(807)) == list(result)
+    assert list(Solution().numToListNode(807)) == [7, 0, 8] 
 
 def test_add_two_numbers():
-    assert list(Solution1().addTwoNumbers(l1, l2)) == list(result)
+    assert list(Solution().addTwoNumbers(
+        arrayToListNode([2, 4, 3]),
+        arrayToListNode([5, 6, 4])
+    )) == [7, 0, 8]
+
+def test_list_node_to_num3():
+    ls = arrayToListNode([1])
+    assert Solution().listNodeToNum(ls) == 1
+
+def test_list_node_to_num4():
+    ls = arrayToListNode([9, 9])
+    assert Solution().listNodeToNum(ls) == 99
+
+def test_num_to_list_node_2():
+    assert list(Solution().numToListNode(100)) == [0, 0, 1]
+
+def test_add_two_numbers_2():
+    list1 = arrayToListNode([1])
+    list2 = arrayToListNode([9, 9])
+    rslt = arrayToListNode([0, 0, 1])
+    assert list(Solution().addTwoNumbers(list1, list2)) == list(rslt)
 
